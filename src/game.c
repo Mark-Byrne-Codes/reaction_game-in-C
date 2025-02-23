@@ -51,10 +51,8 @@ double	measure_reaction_time(int start_delay_seconds)
 		perror("clock_gettime failed (end)");
 		return (-1.0);
 	}
-
 	elapsed_time = (double)(end_ts.tv_sec - start_ts.tv_sec) +
 				   (double)(end_ts.tv_nsec - start_ts.tv_nsec) / 1000000000.0;
-
 	return (elapsed_time);
 }
 

@@ -22,6 +22,8 @@ int	main(void)
 			break ;
 
 		printf("--- Round Ended ---\n");
+		printf("Press Enter to play again.");
+		wait_for_keypress();
 		play_again = 0;
 	}
 

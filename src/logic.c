@@ -21,8 +21,6 @@ void	display_instructions(void)
 }
 
 
-
-
 // /*
 //     Displays a message indicating the user pressed a key too early.
 //     Shown when early key press is detected.
@@ -32,17 +30,4 @@ void	display_instructions(void)
 // {
 // 	printf("\nToo early! Wait for the 'REACT!' prompt.\n");
 // }
-
-/*
-    Displays reaction time (no changes).
-*/
-
-
-/*
-    Ends game round (no changes).
-*/
-void	end_game_round(void)
-{
-	printf("--- Round Ended ---\n");
-}
 
