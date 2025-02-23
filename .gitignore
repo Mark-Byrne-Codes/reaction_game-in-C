@@ -1,1 +1,3 @@
-src/
+src/logic.c 
+src/game.c
+src/reaction_game.h
