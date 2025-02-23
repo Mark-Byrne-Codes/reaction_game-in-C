@@ -9,7 +9,7 @@
     Includes early press detection and handles game flow based on input.
     Returns 0 for normal round completion, 1 for early press (can be used for game flow).
 */
-int play_round(void) {
+int play_round(double *reaction_times, int round_count) {
     int start_delay_seconds = (rand() % (MAX_DELAY_SECONDS - MIN_DELAY_SECONDS + 1)) + MIN_DELAY_SECONDS;
     double reaction_time;
 
@@ -24,12 +24,22 @@ int play_round(void) {
     printf("\n\nREACT! Press enter key!\n");
 
     reaction_time = measure_reaction_time(0);
-    if (reaction_time >= 0)
+    if (reaction_time >= 0) {
+        reaction_times[round_count - 1] = reaction_time;
         printf("\nYour reaction time: %.6f seconds\n", reaction_time);
-    else
+    } else {
         printf("\nError: Invalid reaction time recorded.\n");
+    }
 
     return 0; // Normal round completion
+}
+
+double calculate_average_reaction_time(double *reaction_times, int rounds) {
+    double sum = 0.0;
+    for (int i = 0; i < rounds; i++) {
+        sum += reaction_times[i];
+    }
+    return (rounds > 0) ? sum / rounds : 0.0;
 }
 
 
@@ -71,7 +81,6 @@ int detect_early_press(int delay_seconds) {
     return select(STDIN_FILENO + 1, &set, NULL, NULL, &timeout) == 1;
 }
 
-// Wait for user keypress without echoing input
 void wait_for_keypress(void) {
     getchar();
 }
