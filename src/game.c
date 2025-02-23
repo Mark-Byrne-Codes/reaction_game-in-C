@@ -18,13 +18,13 @@ int	start_game_round(void)
 	start_delay_seconds = (rand() % 3) + 1;
 	early_press = 0;
 
-	display_prompt_wait();
+	printf("\nWait for the prompt...\n");
 
 	sleep(start_delay_seconds);
 
-	display_prompt_react();
+	printf("\n\nREACT! Press enter key!\n");
 	reaction_time = measure_reaction_time(0); // Measure reaction time AFTER prompt.
-	display_results(reaction_time);
+	printf("\nYour reaction time: %.6f seconds\n", reaction_time);
 
 
 	return (early_press); // Return early_press status (0 or 1).

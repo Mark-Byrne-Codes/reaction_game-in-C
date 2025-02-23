@@ -21,7 +21,7 @@ int	main(void)
 		if (game_status != 0)
 			break ;
 
-		end_game_round();
+		printf("--- Round Ended ---\n");
 		play_again = 0;
 	}
 
