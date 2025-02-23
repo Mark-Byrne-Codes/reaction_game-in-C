@@ -5,27 +5,27 @@
     Manages the game loop and overall program flow.
     Returns 0 on successful execution.
 */
-int	main(void)
-{
-	int		game_status;
-	int		play_again;
+int main(void) {
+    int game_status = 0;
+    int round_count = 0;
+    char play_again = 'y';
 
-	game_status = 0;
-	play_again = 1;
+    srand(time(NULL));
+    display_instructions();
 
-	display_instructions();
+    while (play_again == 'y' || play_again == 'Y') {
+        round_count++;
+        printf("\n--- Round %d ---\n", round_count);
 
-	while (play_again == 1)
-	{
-		game_status = start_game_round();
-		if (game_status != 0)
-			break ;
+        game_status = play_round();
+        if (game_status == 1)
+            printf("Oops! You pressed too early.\n");
 
-		printf("--- Round Ended ---\n");
-		printf("Press Enter to play again.");
-		wait_for_keypress();
-		play_again = 0;
-	}
+        printf("\nPlay again? (y/n): ");
+        play_again = getchar();
+        while (getchar() != '\n'); // Clear input buffer
+    }
 
-	return (0);
+    printf("\nThanks for playing!\n");
+    return 0;
 }

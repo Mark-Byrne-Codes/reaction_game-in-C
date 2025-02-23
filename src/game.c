@@ -9,25 +9,27 @@
     Includes early press detection and handles game flow based on input.
     Returns 0 for normal round completion, 1 for early press (can be used for game flow).
 */
-int	start_game_round(void)
-{
-	int		start_delay_seconds;
-	double	reaction_time;
-	int		early_press;
+int play_round(void) {
+    int start_delay_seconds = (rand() % (MAX_DELAY_SECONDS - MIN_DELAY_SECONDS + 1)) + MIN_DELAY_SECONDS;
+    double reaction_time;
 
-	start_delay_seconds = (rand() % 3) + 1;
-	early_press = 0;
+    printf("\nWait for the prompt...\n");
 
-	printf("\nWait for the prompt...\n");
+    if (detect_early_press(start_delay_seconds)) {
+        printf("\nToo early! You pressed a key before 'REACT!'\n");
+        return 1; // Early press detected
+    }
 
-	sleep(start_delay_seconds);
+    sleep(start_delay_seconds);
+    printf("\n\nREACT! Press enter key!\n");
 
-	printf("\n\nREACT! Press enter key!\n");
-	reaction_time = measure_reaction_time(0); // Measure reaction time AFTER prompt.
-	printf("\nYour reaction time: %.6f seconds\n", reaction_time);
+    reaction_time = measure_reaction_time(0);
+    if (reaction_time >= 0)
+        printf("\nYour reaction time: %.6f seconds\n", reaction_time);
+    else
+        printf("\nError: Invalid reaction time recorded.\n");
 
-
-	return (early_press); // Return early_press status (0 or 1).
+    return 0; // Normal round completion
 }
 
 
@@ -56,10 +58,20 @@ double	measure_reaction_time(int start_delay_seconds)
 	return (elapsed_time);
 }
 
-void	wait_for_keypress(void)
-{
-	int	input_char;
+int detect_early_press(int delay_seconds) {
+    fd_set set;
+    struct timeval timeout;
 
-	input_char = getchar();
-	(void)input_char;
+    FD_ZERO(&set);
+    FD_SET(STDIN_FILENO, &set);
+
+    timeout.tv_sec = delay_seconds;
+    timeout.tv_usec = 0;
+
+    return select(STDIN_FILENO + 1, &set, NULL, NULL, &timeout) == 1;
+}
+
+// Wait for user keypress without echoing input
+void wait_for_keypress(void) {
+    getchar();
 }
